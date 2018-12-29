@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="
+	   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd 
+	   http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+	<!-- 消费方应用名，用于计算依赖关系，不是匹配条件，不要与提供方一样 -->
+	<dubbo:application name="tech-web-consumer" />
+
+	<!-- 使用Zookeeper集群注册中心暴露服务地址 -->
+	<dubbo:registry protocol="zookeeper" address="172.17.8.100:2181,172.17.8.100:2182,172.17.8.100:2183" />
+
+	<!-- 服务启动关闭对该服务提供者的接口是否正常的监测，也就是BarService是否可以正常调用不影响本应用的启动，当为true的时候如果该接口挂了，本应用就起不起来了
+	<dubbo:reference interface="com.bw.dubbo.api.SysUserService" check="false" />
+	-->
+
+	<!-- 关闭所有服务的启动时检查-->
+	<dubbo:consumer check="false" />
+
+
+	<!-- 生成远程服务代理，可以和本地bean一样使用personService，init是否饥饿式初始化这个引用 -->
+	<dubbo:reference id="informationRpcService" interface="com.wd.tech.rpc.api.InformationRpcService" init="false"/>
+	<dubbo:reference id="chatRpcService" interface="com.wd.tech.rpc.api.ChatRpcService" init="false" />
+	<dubbo:reference id="communityRpcService" interface="com.wd.tech.rpc.api.CommunityRpcService" init="false"/>
+	<dubbo:reference id="groupRpcService" interface="com.wd.tech.rpc.api.GroupRpcService" init="false"/>
+	<dubbo:reference id="userRpcService" interface="com.wd.tech.rpc.api.UserRpcService"  init="false"/>
+	<dubbo:reference id="techToolRpcService" interface="com.wd.tech.rpc.api.ToolRpcService"  init="false"/>
+	<dubbo:reference id="weChatRpcService" interface="com.bw.pay.client.api.WeChatRpcService" init="false" />
+	<dubbo:reference id="techPayRpcService" interface="com.bw.pay.client.api.TechPayRpcService" init="false" />
+
+</beans>
